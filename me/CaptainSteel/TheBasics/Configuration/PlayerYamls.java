@@ -9,6 +9,7 @@ import me.CaptainSteel.TheBasics.BasicConsoleSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -19,7 +20,7 @@ public class PlayerYamls
 	@EventHandler
 	public void playerCreateFileOnJoin(PlayerJoinEvent e)
 	{
-		File playerDataFile = new File("plugins/TheBasics/Players", e.getPlayer().getName() + ".yml");
+		File playerDataFile = new File("plugins/TheBasics/Players", e.getPlayer().getUniqueId() + ".yml");
 		if(playerDataFile.exists())
 		{
 			 playerFile = YamlConfiguration.loadConfiguration(playerDataFile);
@@ -30,7 +31,7 @@ public class PlayerYamls
 				playerDataFile.createNewFile();
 			} catch (IOException ex) 
 			{
-				BasicConsoleSender.consoleExceptionMessage("Could not create the player file for: " + e.getPlayer().getName() + ".", ex);
+				BasicConsoleSender.consoleExceptionMessage("Could not create the player file for: " + e.getPlayer().getUniqueId() + ".", ex);
 			}
 		}
 	}// END playerCreateFileOnJoin()
@@ -57,6 +58,13 @@ public class PlayerYamls
        	 	playerFolder = null;
         }
 	}// END createPlayerFolder()
+	
+	public static File getPlayerFile(Player p)
+	{
+		File playerNameFile = new File("plugins/TheBasics/Players/" + p.getUniqueId());
+		
+		return playerNameFile;
+	}
 	
     public static File listPlayerFiles()
     {
